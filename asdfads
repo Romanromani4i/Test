@@ -1,0 +1,102 @@
+#include <iostream>
+using namespace std;
+
+//Structura node-ului
+struct Nod {
+    char val;
+    Nod* urmator;
+
+    Nod(char valoare);
+};
+
+//Clasul listei
+class Stiva {
+public:
+    Stiva();
+
+    void Inserare(char valoare);
+    char Stergere();
+
+    bool EsteGoala();
+private:
+    Nod* nodul;
+};
+
+//Functiile
+Nod::Nod(char valoare) {
+    val = valoare;
+    urmator = nullptr;
+}
+
+Stiva::Stiva() {
+    nodul = nullptr;
+}
+    //Inserarea in lista
+void Stiva::Inserare(char valoare) {
+    Nod* temporal = new Nod(valoare);
+    temporal->urmator = nodul;
+
+    nodul = temporal;
+}
+    //Stergerea din stva
+char Stiva::Stergere() {
+    Nod* temporal = nodul;
+    char valoarea = temporal->val;
+
+    nodul = temporal->urmator;
+    delete temporal;
+
+    return valoarea;
+}
+
+    //Este stiva goala sau nu
+bool Stiva::EsteGoala() {
+    if (nodul == nullptr)
+        return true;
+    else
+        return false;
+}
+
+int main()
+{
+    Stiva sirul;
+    Stiva primul, doilea;
+    char c, y;
+
+    //Citim lista
+    cout<<"Introduceti lista: "<<endl;
+    while ((c = getchar()) != '$')
+        sirul.Inserare(c);
+        cout<<endl;
+
+    //Citim litera
+    cout<<"Litera: ";cin>>y;
+
+    //Impartim literele in doua grupe
+    while (!sirul.EsteGoala()) {
+        c = sirul.Stergere();
+
+        if (c < y)  //Litera e inaintea la y in alfabet
+            primul.Inserare(c);
+        else        //Litera e dupa y in alfabet
+            doilea.Inserare(c);
+    }
+
+
+    //Afisarea stivelor
+    cout << "\nPrimul sir: \n";
+
+    while (!primul.EsteGoala())
+        cout << primul.Stergere();
+        cout<<endl;
+
+    cout << "\nAl doilea sir: \n";
+
+    while (!doilea.EsteGoala())
+        cout << doilea.Stergere();
+        cout<<endl;
+
+
+
+    return 0;
+}
